@@ -83,21 +83,48 @@ def download(url, pathname):
             progress.update(len(data))
 
 
-def main(path, start_date, end_date):
+def main(path, start_date, end_date, batch_size):
     # get all urls
     urls = get_all_urls(start_date, end_date)
     imgs = []
     extracted_imgs = []
+    img_counter = 0
+    if len(urls) < batch_size:
+        batch_size = len(urls)-1
+    start = batch_size - 1
     # get all images
-    for url in urls:
-        extracted_imgs = get_all_images(url)
-        imgs.extend(extracted_imgs)
-    for img in imgs:
-        # for each image, download it
-        download(img, path)
+    for url_index in range(start, len(urls), batch_size):
+        if url_index - batch_size < 0:
+            start_index = 0
+        else:
+            start_index = url_index - batch_size
+        if img_counter + (batch_size*3) > len(urls):
+            urls_sliced = urls[start_index:len(urls)]
+        else:
+            urls_sliced = urls[start_index:url_index]
+        for url in urls_sliced:
+            extracted_imgs = get_all_images(url)
+            imgs.extend(extracted_imgs)
+        for img in imgs:
+            # for each image, download it
+            download(img, path)
+        img_counter = img_counter + len(imgs)
+        print(f"\n===================\n\nDownloaded {img_counter} images so far\n================\n")
+        del imgs[0:len(imgs)]
+    print(f"\n=============\nCompleted Download of {img_counter} images")
 
+# ENTER THE START DATE HERE
 start_date = "2011-09-11"
+
+# UNCOMMENT THESE NEXT TWO LINES TO USE TODAY's DATE
 # todays_date = date.today()
 # end_date = todays_date.strftime("%Y-%m-%d")
+
+# COMMENT OUT THIS LINE IF YOU WANT TO USE THE TODAY"S DATE
 end_date = "2011-11-11"
-main("solar_monitor_magnetosphere", start_date, end_date)
+
+# THIS BATCH SIZE MEANS THAT THESE NUMBER OF FILES WILL BE DOWNLOADED IN BATCHES INSTEAD OF ONE BIG BATCH. YOU CAN CHANGE THIS IF YOU'D LIKE.
+batch_size = 5
+
+# RUNS THE PROGRAM. FIRST PARAMETER IS THE NAME OF THE FOLDER WHERE THE FILES ARE LOCATED
+main("solar_monitor_magnetosphere", start_date, end_date, batch_size)
