@@ -113,18 +113,30 @@ def main(path, start_date, end_date, batch_size):
         del imgs[0:len(imgs)]
     print(f"\n=============\nCompleted Download of {img_counter} images")
 
+
 # ENTER THE START DATE HERE
-start_date = "2011-09-11"
+default_start_date = "2011-09-11"
+start_date = input(f"\nWhat is the date you wish to start at (use format YYYY-MM-DD)?\n Current start date is {default_start_date}\n")
+if start_date == "":
+    start_date = default_start_date
 
 # UNCOMMENT THESE NEXT TWO LINES TO USE TODAY's DATE
 # todays_date = date.today()
 # end_date = todays_date.strftime("%Y-%m-%d")
 
 # COMMENT OUT THIS LINE IF YOU WANT TO USE THE TODAY"S DATE
-end_date = "2011-11-11"
+default_end_date = "2011-11-11"
+end_date = input(
+    f"\nWhat is the date you wish to end at (use format YYYY-MM-DD)?\n Current end date is {default_end_date}\n")
+if end_date == "":
+    end_date = default_end_date
 
 # THIS BATCH SIZE MEANS THAT THESE NUMBER OF FILES WILL BE DOWNLOADED IN BATCHES INSTEAD OF ONE BIG BATCH. YOU CAN CHANGE THIS IF YOU'D LIKE.
-batch_size = 5
+default_batch_size = 5
+batch_size = input(
+    f"\nWhat is the batch size? i.e. The number of pictures you wish to download at a time?\n Current batch size is {default_batch_size}\n")
+if batch_size == "":
+    batch_size = default_batch_size
 
 # RUNS THE PROGRAM. FIRST PARAMETER IS THE NAME OF THE FOLDER WHERE THE FILES ARE LOCATED
 main("solar_monitor_magnetosphere", start_date, end_date, batch_size)
