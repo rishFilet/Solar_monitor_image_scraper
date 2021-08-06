@@ -137,6 +137,8 @@ batch_size = input(
     f"\nWhat is the batch size? i.e. The number of pictures you wish to download at a time?\n Current batch size is {default_batch_size}\n")
 if batch_size == "":
     batch_size = default_batch_size
+else:
+    batch_size = int(batch_size)
 
 # RUNS THE PROGRAM. FIRST PARAMETER IS THE NAME OF THE FOLDER WHERE THE FILES ARE LOCATED
 main("solar_monitor_magnetosphere", start_date, end_date, batch_size)
