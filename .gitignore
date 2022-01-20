@@ -1,2 +1,6 @@
 *.png
 files/
+jsoc_fits_files/
+jsoc_png_files/
+email.py
+*.log
